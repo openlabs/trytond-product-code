@@ -10,3 +10,19 @@ Features
  * Search within code as well when a search on product is done.
  * Allow any number of codes against a product.
  * Simple validation of these codes
+
+Copyright
+---------
+
+Read COPYRIGHT
+
+License
+-------
+
+GPL3 - Read LICENSE
+
+Installation
+------------
+
+Read INSTALL
+============
