@@ -2,10 +2,41 @@
 #This file is part of Tryton.  The COPYRIGHT file at the top level of
 #this repository contains the full copyright notices and license terms.
 
-from setuptools import setup
+from setuptools import setup, Command
 import re
 import os
 import ConfigParser
+
+
+class XMLTests(Command):
+    """Runs the tests and save the result to an XML file
+
+    Running this requires unittest-xml-reporting which can
+    be installed using::
+
+        pip install unittest-xml-reporting
+
+    """
+    description = "Run tests with coverage and produce jUnit style report"
+
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        import coverage
+        import xmlrunner
+        cov = coverage.coverage(source=["trytond.modules.product_code"])
+        cov.start()
+        from tests import suite
+        xmlrunner.XMLTestRunner(output="xml-test-results").run(suite())
+        cov.stop()
+        cov.save()
+        cov.xml_report(outfile="coverage.xml")
 
 
 def read(fname):
@@ -71,4 +102,7 @@ setup(name='trytond_product_code',
     """,
     test_suite='tests',
     test_loader='trytond.test_loader:Loader',
+    cmdclass={
+        'xmltests': XMLTests,
+    },
     )
