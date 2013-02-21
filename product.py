@@ -40,6 +40,7 @@ class ProductCode(ModelSQL, ModelView):
         ('upc-a', 'UPC-A'),
         ('other', 'Other')
     ], 'Type', required=True)
+    active = fields.Boolean('Active')
     product = fields.Many2One(
         'product.product', 'Product', ondelete='CASCADE', select=True
     )
@@ -73,4 +74,8 @@ class ProductCode(ModelSQL, ModelView):
         if self.code_type == 'upc-a' and len(self.code) != 12:
             return False
 
+        return True
+
+    @staticmethod
+    def default_active():
         return True
