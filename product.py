@@ -52,9 +52,9 @@ class ProductCode(ModelSQL, ModelView):
             ('check_code', 'wrong_code')
         ]
         cls._error_messages.update({
-            'wrong_code': 'The code entered is wrong.' \
-                '\nFor EAN, length should be 13.' \
-                '\nFor UPC-A, length should be 12.' \
+            'wrong_code': 'The code entered is wrong.'
+            '\nFor EAN, length should be 13.'
+            '\nFor UPC-A, length should be 12.'
         })
         # XXX: The uniqueness should be global or based on code type.
         # But its a problem to worry about later

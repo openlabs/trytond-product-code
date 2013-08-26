@@ -44,8 +44,7 @@ class ProductTestCase(unittest.TestCase):
     def test0010code_constraints(self):
         '''Test EAN and UPC-A code length constraints
         '''
-        with Transaction().start(DB_NAME, USER,
-                context=CONTEXT) as transaction:
+        with Transaction().start(DB_NAME, USER, context=CONTEXT):
             product = self.product.create({
                 'name': 'Test product',
                 'default_uom': self.uom.search([('name', '=', 'Unit')])[0],
@@ -76,8 +75,7 @@ class ProductTestCase(unittest.TestCase):
     def test0020product_rec_name_search(self):
         '''Test the rec name search on product
         '''
-        with Transaction().start(DB_NAME, USER,
-                context=CONTEXT) as transaction:
+        with Transaction().start(DB_NAME, USER, context=CONTEXT):
             product = self.product.create({
                 'name': 'Test product',
                 'default_uom': self.uom.search([('name', '=', 'Unit')])[0],

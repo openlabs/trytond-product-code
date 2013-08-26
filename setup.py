@@ -61,23 +61,24 @@ for dep in info.get('depends', []):
 requires.append('trytond >= %s.%s, < %s.%s' %
         (major_version, minor_version, major_version, minor_version + 1))
 
-setup(name='trytond_product_code',
+setup(
+    name='trytond_product_code',
     version=info.get('version', '0.0.1'),
     description='Tryton module for adding multiple product codes',
     long_description=read('README.rst'),
     author='Tryton',
     url='http://www.tryton.org/',
-    download_url="http://downloads.tryton.org/" + \
+    download_url="http://downloads.tryton.org/" +
         info.get('version', '0.0.1').rsplit('.', 1)[0] + '/',
     package_dir={'trytond.modules.product_code': '.'},
     packages=[
         'trytond.modules.product_code',
         'trytond.modules.product_code.tests',
-        ],
+    ],
     package_data={
-        'trytond.modules.product_code': info.get('xml', []) \
-            + ['tryton.cfg', 'locale/*.po', 'icons/*.svg'],
-        },
+        'trytond.modules.product_code': info.get('xml', []) +
+            ['tryton.cfg', 'locale/*.po', 'icons/*.svg'],
+    },
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Plugins',
@@ -92,7 +93,7 @@ setup(name='trytond_product_code',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Topic :: Office/Business',
-        ],
+    ],
     license='GPL-3',
     install_requires=requires,
     zip_safe=False,
@@ -105,4 +106,4 @@ setup(name='trytond_product_code',
     cmdclass={
         'xmltests': XMLTests,
     },
-    )
+)
