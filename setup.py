@@ -66,10 +66,8 @@ setup(
     version=info.get('version', '0.0.1'),
     description='Tryton module for adding multiple product codes',
     long_description=read('README.rst'),
-    author='Tryton',
-    url='http://www.tryton.org/',
-    download_url="http://downloads.tryton.org/" +
-        info.get('version', '0.0.1').rsplit('.', 1)[0] + '/',
+    author='Openlabs Technologies & Consulting (P) Limited',
+    url='https://github.com/openlabs/trytond-product-code',
     package_dir={'trytond.modules.product_code': '.'},
     packages=[
         'trytond.modules.product_code',

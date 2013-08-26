@@ -20,7 +20,7 @@ class Product:
         ProductCode = Pool().get('product.product.code')
 
         ids = map(int, cls.search([('code',) + clause[1:]], order=[]))
-        ids += map(int, cls.search([('name',) + clause[1:]], order=[]))
+        ids += map(int, cls.search([('template.name',) + clause[1:]], order=[]))
 
         if not ids:
             codes = ProductCode.search([('code',) + clause[1:]], order=[])
@@ -48,9 +48,6 @@ class ProductCode(ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(ProductCode, cls).__setup__()
-        cls._constraints += [
-            ('check_code', 'wrong_code')
-        ]
         cls._error_messages.update({
             'wrong_code': 'The code entered is wrong.'
             '\nFor EAN, length should be 13.'
@@ -70,12 +67,23 @@ class ProductCode(ModelSQL, ModelView):
         UPC-A should be 12 characters
         '''
         if self.code_type == 'ean' and len(self.code) != 13:
-            return False
+            self.raise_user_error('wrong_code')
         if self.code_type == 'upc-a' and len(self.code) != 12:
-            return False
+            self.raise_user_error('wrong_code')
 
         return True
 
     @staticmethod
     def default_active():
         return True
+
+    @classmethod
+    def validate(cls, records):
+        """
+        Validate records.
+
+        :param records: active record list of productcode objects
+        """
+        super(ProductCode, cls).validate(records)
+        for record in records:
+            record.check_code()

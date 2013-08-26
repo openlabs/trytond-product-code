@@ -28,6 +28,7 @@ class ProductTestCase(unittest.TestCase):
         self.product = POOL.get('product.product')
         self.uom = POOL.get('product.uom')
         self.product_code = POOL.get('product.product.code')
+        self.template = POOL.get('product.template')
 
     def test0005views(self):
         '''
@@ -44,59 +45,69 @@ class ProductTestCase(unittest.TestCase):
     def test0010code_constraints(self):
         '''Test EAN and UPC-A code length constraints
         '''
-        with Transaction().start(DB_NAME, USER, context=CONTEXT):
-            product = self.product.create({
+        with Transaction().start(DB_NAME, USER, context=CONTEXT) as transaction:
+            template, = self.template.create([{
                 'name': 'Test product',
                 'default_uom': self.uom.search([('name', '=', 'Unit')])[0],
                 'list_price': Decimal('10'),
                 'cost_price': Decimal('5'),
-            })
-            self.assertRaises(UserError, self.product_code.create, {
+            }])
+            self.assert_(template)
+
+            product, = self.product.search([])
+
+            self.assertRaises(UserError, self.product_code.create, [{
                 'product': product,
                 'code': '123456',
                 'code_type': 'ean'
-            })
-            self.product_code.create({
+            }])
+            self.product_code.create([{
                 'product': product,
                 'code': '1234567890123',
                 'code_type': 'ean'
-            })
-            self.assertRaises(UserError, self.product_code.create, {
+            }])
+            self.assertRaises(UserError, self.product_code.create, [{
                 'product': product,
                 'code': '123456',
                 'code_type': 'upc-a'
-            })
-            self.product_code.create({
+            }])
+            self.product_code.create([{
                 'product': product,
                 'code': '123456789012',
                 'code_type': 'upc-a'
-            })
+            }])
+
+            transaction.cursor.rollback()
 
     def test0020product_rec_name_search(self):
         '''Test the rec name search on product
         '''
-        with Transaction().start(DB_NAME, USER, context=CONTEXT):
-            product = self.product.create({
+        with Transaction().start(DB_NAME, USER, context=CONTEXT) as transaction:
+            template, = self.template.create([{
                 'name': 'Test product',
                 'default_uom': self.uom.search([('name', '=', 'Unit')])[0],
                 'list_price': Decimal('10'),
                 'cost_price': Decimal('5'),
-            })
-            self.product_code.create({
+            }])
+            self.assert_(template)
+
+            product, = self.product.search([])
+
+            self.product_code.create([{
                 'product': product,
                 'code': '1231231231231',
                 'code_type': 'ean'
-            })
-            self.product_code.create({
+            }])
+            self.product_code.create([{
                 'product': product,
                 'code': '789789789789',
                 'code_type': 'upc-a'
-            })
-            self.product_code.create({
+            }])
+            self.product_code.create([{
                 'product': product,
                 'code': 'somecode',
                 'code_type': 'other'
-            })
+            }])
 
             self.assertEqual(
                 len(self.product.search([('rec_name', 'ilike', '%123%')])), 1
@@ -113,6 +124,8 @@ class ProductTestCase(unittest.TestCase):
             self.assertEqual(
                 len(self.product.search([('rec_name', 'ilike', '%wrong%')])), 0
             )
+
+            transaction.cursor.rollback()
 
 
 def suite():
