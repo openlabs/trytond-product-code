@@ -41,15 +41,14 @@ this repository contains the full copyright notices and license terms. -->
         <record model="ir.ui.view" id="pc_product_view_form">
             <field name="model">product.product</field>
             <field name="type">form</field>
-            <field name="inherit" ref="product.template_view_form"/>
+            <field name="inherit" ref="product.product_view_form"/>
             <field name="arch" type="xml">
                 <![CDATA[
                 <data>
-                    <xpath expr="/form/notebook/page[@id=&quot;general&quot;]"
-                        position="after">
-                        <page string="Codes" id="codes">
-                            <field name="codes" colspan="4"/>
-                        </page>
+                  <xpath expr="//field[@name=&quot;description&quot;]"
+                          position="after">
+                      <newline/>
+                      <field name="codes" colspan="6"/>
                     </xpath>
                 </data>
                 ]]>
