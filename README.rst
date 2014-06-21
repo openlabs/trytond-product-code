@@ -1,6 +1,12 @@
 trytond_product_code
 ====================
 
+.. image:: https://travis-ci.org/openlabs/trytond-product-code.png?branch=develop
+  :target: https://travis-ci.org/openlabs/trytond-product-code
+
+.. image:: https://coveralls.io/repos/openlabs/trytond-product-code/badge.png?branch=develop
+  :target: https://coveralls.io/r/openlabs/trytond-product-code
+
 A module for storing any number of UPC, EAN and other codes related to a
 product.
 

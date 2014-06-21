@@ -1,2 +1,5 @@
 [run]
+source = trytond.modules.product_code
+
+[report]
 omit = *tests*,*/__tryton__.py,*/upload.py,*/setup.py
