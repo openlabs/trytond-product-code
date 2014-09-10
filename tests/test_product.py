@@ -51,6 +51,7 @@ class ProductTestCase(unittest.TestCase):
                 'default_uom': self.uom.search([('name', '=', 'Unit')])[0],
                 'list_price': Decimal('10'),
                 'cost_price': Decimal('5'),
+                'products': [('create', self.template.default_products())]
             }])
             self.assert_(template)
 
@@ -88,6 +89,7 @@ class ProductTestCase(unittest.TestCase):
                 'default_uom': self.uom.search([('name', '=', 'Unit')])[0],
                 'list_price': Decimal('10'),
                 'cost_price': Decimal('5'),
+                'products': [('create', self.template.default_products())]
             }])
             self.assert_(template)
 

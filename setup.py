@@ -6,6 +6,35 @@ from setuptools import setup, Command
 import re
 import os
 import ConfigParser
+import unittest
+import sys
+
+
+class SQLiteTest(Command):
+    """
+    Run the tests on SQLite
+    """
+    description = "Run tests on SQLite"
+
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        from trytond.config import CONFIG
+        CONFIG['db_type'] = 'sqlite'
+        os.environ['DB_NAME'] = ':memory:'
+
+        from tests import suite
+        test_result = unittest.TextTestRunner(verbosity=3).run(suite())
+
+        if test_result.wasSuccessful():
+            sys.exit(0)
+        sys.exit(-1)
 
 
 class XMLTests(Command):
@@ -103,5 +132,6 @@ setup(
     test_loader='trytond.test_loader:Loader',
     cmdclass={
         'xmltests': XMLTests,
+        'test': SQLiteTest
     },
 )
