@@ -19,11 +19,15 @@ class Product:
     def search_rec_name(cls, name, clause):
         ProductCode = Pool().get('product.product.code')
 
-        ids = map(int, cls.search([('code',) + clause[1:]], order=[]))
-        ids += map(int, cls.search([('template.name',) + clause[1:]], order=[]))
+        ids = map(int, cls.search([('code',) + tuple(clause[1:])], order=[]))
+        ids += map(int, cls.search(
+            [('template.name',) + tuple(clause[1:])], order=[]
+        ))
 
         if not ids:
-            codes = ProductCode.search([('code',) + clause[1:]], order=[])
+            codes = ProductCode.search(
+                [('code',) + tuple(clause[1:])], order=[]
+            )
             ids += map(int, cls.search([('codes', 'in', map(int, codes))]))
 
         return [('id', 'in', ids)]

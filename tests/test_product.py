@@ -112,13 +112,13 @@ class ProductTestCase(unittest.TestCase):
             }])
 
             self.assertEqual(
-                len(self.product.search([('rec_name', 'ilike', '%123%')])), 1
+                len(self.product.search([['rec_name', 'ilike', '%123%']])), 1
             )
             self.assertEqual(
                 len(self.product.search([('rec_name', 'ilike', '%test%')])), 1
             )
             self.assertEqual(
-                len(self.product.search([('rec_name', 'ilike', '%78%')])), 1
+                len(self.product.search([['rec_name', 'ilike', '%78%']])), 1
             )
             self.assertEqual(
                 len(self.product.search([('rec_name', 'ilike', '%code%')])), 1
