@@ -51,6 +51,7 @@ class ProductTestCase(unittest.TestCase):
                 'default_uom': self.uom.search([('name', '=', 'Unit')])[0],
                 'list_price': Decimal('10'),
                 'cost_price': Decimal('5'),
+                'products': [('create', self.template.default_products())]
             }])
             self.assert_(template)
 
@@ -88,6 +89,7 @@ class ProductTestCase(unittest.TestCase):
                 'default_uom': self.uom.search([('name', '=', 'Unit')])[0],
                 'list_price': Decimal('10'),
                 'cost_price': Decimal('5'),
+                'products': [('create', self.template.default_products())]
             }])
             self.assert_(template)
 
@@ -110,13 +112,13 @@ class ProductTestCase(unittest.TestCase):
             }])
 
             self.assertEqual(
-                len(self.product.search([('rec_name', 'ilike', '%123%')])), 1
+                len(self.product.search([['rec_name', 'ilike', '%123%']])), 1
             )
             self.assertEqual(
                 len(self.product.search([('rec_name', 'ilike', '%test%')])), 1
             )
             self.assertEqual(
-                len(self.product.search([('rec_name', 'ilike', '%78%')])), 1
+                len(self.product.search([['rec_name', 'ilike', '%78%']])), 1
             )
             self.assertEqual(
                 len(self.product.search([('rec_name', 'ilike', '%code%')])), 1
