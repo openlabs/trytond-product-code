@@ -25,8 +25,7 @@ class SQLiteTest(Command):
         pass
 
     def run(self):
-        from trytond.config import CONFIG
-        CONFIG['db_type'] = 'sqlite'
+        os.environ['TRYTOND_DATABASE_URI'] = 'sqlite://'
         os.environ['DB_NAME'] = ':memory:'
 
         from tests import suite
@@ -35,37 +34,6 @@ class SQLiteTest(Command):
         if test_result.wasSuccessful():
             sys.exit(0)
         sys.exit(-1)
-
-
-class XMLTests(Command):
-    """Runs the tests and save the result to an XML file
-
-    Running this requires unittest-xml-reporting which can
-    be installed using::
-
-        pip install unittest-xml-reporting
-
-    """
-    description = "Run tests with coverage and produce jUnit style report"
-
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        import coverage
-        import xmlrunner
-        cov = coverage.coverage(source=["trytond.modules.product_code"])
-        cov.start()
-        from tests import suite
-        xmlrunner.XMLTestRunner(output="xml-test-results").run(suite())
-        cov.stop()
-        cov.save()
-        cov.xml_report(outfile="coverage.xml")
 
 
 def read(fname):
@@ -131,7 +99,6 @@ setup(
     test_suite='tests',
     test_loader='trytond.test_loader:Loader',
     cmdclass={
-        'xmltests': XMLTests,
-        'test': SQLiteTest
+        'test': SQLiteTest,
     },
 )
